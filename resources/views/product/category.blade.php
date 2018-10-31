@@ -21,6 +21,11 @@
 	<script src="/assets/js/jquery.dataTables.min.js"></script>
 	<script src="/assets/js/jquery.dataTables.bootstrap.js"></script>
 	<script src="/assets/layer/layer.js" type="text/javascript"></script>
+	<style>
+		.a{
+			text-align: left !important;
+		}
+	</style>
 	<title>分类管理</title>
 </head>
 
@@ -29,8 +34,8 @@
 		<div class="sort_style">
 			<div class="border clearfix">
 				<span class="l_f">
-					<a href="javascript:ovid()" id="sort_add" class="btn btn-warning"><i class="fa fa-plus"></i> 添加分类</a>
-					<a href="javascript:ovid()" class="btn btn-danger"><i class="fa fa-trash"></i> 批量删除</a>
+					<a href="javascript:;" id="sort_add" class="btn btn-warning"><i class="fa fa-plus"></i> 添加分类</a>
+					<a href="javascript:;" class="btn btn-danger"><i class="fa fa-trash"></i> 批量删除</a>
 				</span>
 				<span class="r_f">共：<b>5</b>类</span>
 			</div>
@@ -41,22 +46,23 @@
 							<th width="25px"><label><input type="checkbox" class="ace"><span class="lbl"></span></label></th>
 							<th width="50px">ID</th>
 							<th width="100px">分类名称</th>
-							<th width="50px">加入时间</th>
 							<th width="150px">操作</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<td><label><input type="checkbox" class="ace"><span class="lbl"></span></label></td>
-							<td>1</td>
-							<td>幻灯片</td>
-							<td>2016-6-29 12:34</td>
-							<td class="td-manage">
-								<a title="编辑" onclick="member_edit('编辑','member-add.html','4','','510')" href="javascript:;" class="btn btn-xs btn-info"><i
-									 class="fa fa-edit bigger-120"></i></a>
-								<a title="删除" href="javascript:;" onclick="member_del(this,'1')" class="btn btn-xs btn-warning"><i class="fa fa-trash  bigger-120"></i></a>
-							</td>
-						</tr>
+						@foreach ($all as $v)
+							<tr>
+								<td><label><input type="checkbox" class="ace"><span class="lbl"></span></label></td>
+								<td>{{$v->id}}</td>
+								<td class="a"><?=str_repeat('-',8*$v['level'])?>{{$v->cat_name}}</td>
+								<td class="td-manage">
+									<a title="编辑" onclick="member_edit('编辑','member-add.html','4','','510')" href="javascript:;" class="btn btn-xs btn-info"><i
+										class="fa fa-edit bigger-120"></i></a>
+									<a title="删除" href="javascript:;" onclick="member_del(this,'1')" class="btn btn-xs btn-warning"><i class="fa fa-trash  bigger-120"></i></a>
+								</td>
+							</tr>
+						@endforeach
+						
 					</tbody>
 				</table>
 			</div>
@@ -71,6 +77,9 @@
 						&nbsp;&nbsp;&nbsp;
 						<select id="p_id">
 							<option value="0">根级分类</option>
+							@foreach ($category as $v)
+								<option value="{{$v->id}}"><?=str_repeat('-',8*$v['level'])?>{{$v->cat_name}}</option>
+							@endforeach
 						</select>
 					</div>
 				</li>
@@ -111,12 +120,31 @@
 				else {
 					var pid = $("#p_id").val();
 					var cat_name = $('#cat_name').val();
-					console.log(pid,cat_name);
-					layer.alert('添加成功！', {
-						title: '提示框',
-						icon: 1,
-					});
-					layer.close(index);
+					$.ajax({
+						type:"GET",
+						url:"{{Route('ProductCategory_add')}}",
+						data:{parent_id:pid,cat_name:cat_name},
+						success:function(data)
+						{
+							if(data==1)
+							{
+								layer.alert('该分类已存在！', {
+									title: '提示框',
+									icon: 0,
+								});
+							}
+							else
+							{
+								layer.alert('添加成功！', {
+									title: '提示框',
+									icon: 1,
+								});
+								layer.close(index);
+								location.href='/product/category'
+							}
+							
+						}
+					})
 				}
 			}
 		});

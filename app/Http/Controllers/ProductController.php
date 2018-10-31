@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Category;
 
 class ProductController extends Controller
 {
@@ -33,11 +34,19 @@ class ProductController extends Controller
     // 分类管理
     public function category()
     {
-        return view('product.category');
+        $category = new Category;
+        $cat = $category->get1A2();
+        $all = $category->getAll();
+        return view('product.category',[
+            'category'=>$cat,
+            'all'=>$all,
+        ]);
     }
 
-    public function category_add()
+    public function category_add(Request $req)
     {
-        return view('product.category_add');
+        $data = $req->all();
+        $category = new Category;
+        $category->add($data);
     }
 }
