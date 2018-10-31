@@ -11,6 +11,9 @@
 |
 */
 
+// 测试
+Route::get('/test','TestController@index')->name('test');
+
 // 登录
 Route::get('/login','LoginController@login')->name('login');
 Route::post('/login','LoginController@dologin')->name('dologin');
@@ -32,6 +35,7 @@ Route::middleware(['login'])->group(function(){
     Route::get('/systems',function(){
         return view('systems');
     });
+
     
     // 产品管理
     Route::get('/product/list','ProductController@list')->name('ProductList'); // 产品列表
@@ -66,7 +70,8 @@ Route::middleware(['login'])->group(function(){
     // 店铺管理
     Route::get('/shop/list','ShopController@list')->name('ShopList'); // 店铺列表
     Route::get('/shop/audit','ShopController@audit')->name('ShopAudit'); // 店铺审核
-    Route::get('/shop/detailed','ShopController@detailed')->name('ShopDetailed'); // 店铺审核详情页
+    Route::get('/shop/detailed/{id}','ShopController@detailed')->name('ShopDetailed'); // 店铺审核详情页
+    Route::get('/shop/mail','ShopController@pass')->name('ShopSend'); // 审核结果
 
     // 消息管理
     Route::get('/info/list','InfoController@guestbook')->name('InfoGuestbook'); // 店铺列表
@@ -81,11 +86,25 @@ Route::middleware(['login'])->group(function(){
     Route::get('/systems/column','SystemsController@column')->name('SystemsColumn'); // 系统栏目管理
     Route::get('/systems/log','SystemsController@log')->name('SystemsLog'); // 系统日志
 
-    // 管理员管理
+
+    // 管理员管理 
+    Route::get('/admin/changePwd','AdminController@changePwd')->name('AdminchangePwd'); // 修改密码
     Route::get('/admin/competence','AdminController@competence')->name('AdminCompetence'); // 权限管理
-    Route::get('/admin/add','AdminController@add')->name('AdminAdd'); // 添加权限
+    Route::get('/admin/cpAdd','AdminController@cpAdd')->name('AdmincpAdd'); // 添加权限
+    Route::post('/admin/cpAdd','AdminController@doCpAdd')->name('AdmindoCpAdd'); // 添加权限
+    
+    Route::get('/admin/cpEdit/{id}','AdminController@cpEdit')->name('AdmincpEdit'); // 修改权限
+    Route::post('/admin/cpEdit/{id}','AdminController@doCpEdit')->name('AdmindoCpEdit'); // 修改权限
+
+    Route::get('/admin/cpDel','AdminController@cpDel')->name('AdmincpDel'); // 删除权限
+
     Route::get('/admin/list','AdminController@list')->name('AdminList'); // 管理员列表
+
+    Route::get('/admin/stop','AdminController@stop')->name('AdminStop'); // 禁用管理员
+    Route::get('/admin/start','AdminController@start')->name('AdminStart'); // 开启管理员
+    Route::get('/admin/del','AdminController@del')->name('AdminDel'); // 删除管理员
     Route::post('/admin/add','AdminController@adminAdd')->name('AdminAdd'); // 添加管理员
+
     Route::get('/admin/info','AdminController@info')->name('AdminInfo'); // 个人信息
 
 });

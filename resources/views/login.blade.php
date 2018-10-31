@@ -52,7 +52,7 @@
 							</h4>
 
 							<div class="login_icon"><img src="/images/login.png" /></div>
-
+								
 							<form action="{{Route('dologin')}}" method="post">
 
 								@csrf
@@ -125,6 +125,14 @@
 					icon: 0,
 				});
 		}
+	}
+
+	if("{{session('error')}}")
+	{
+		layer.alert( "{{session('error')}}", {
+					title: '提示框',
+					icon: 0,
+				});
 	}
 
 

@@ -46,7 +46,7 @@
             <div class="col-sm-9"> <span>{{$data->created_at}}</span></div>
           </div>
           <div class="Button_operation clearfix">
-            <button onclick="modify();" class="btn btn-danger radius" type="submit">修改信息</button>
+            {{-- <button onclick="modify();" class="btn btn-danger radius" type="submit">修改信息</button> --}}
             <button onclick="save_info();" class="btn btn-success radius" type="button">保存修改</button>
           </div>
         </div>
@@ -120,12 +120,12 @@
 <script>
 
   //按钮点击事件
-  function modify() {
-    $('.text_info').attr("disabled", false);
-    $('.text_info').addClass("add");
-    $('#Personal').find('.xinxi').addClass("hover");
-    $('#Personal').find('.btn-success').css({ 'display': 'block' });
-  };
+  // function modify() {
+  //   $('.text_info').attr("disabled", false);
+  //   $('.text_info').addClass("add");
+  //   $('#Personal').find('.xinxi').addClass("hover");
+  //   $('#Personal').find('.btn-success').css({ 'display': 'block' });
+  // };
   function save_info() {
     var num = 0;
     var str = "";
@@ -206,6 +206,19 @@
           return false;
         }
         else {
+          var pwd = $("#password").val()
+          var n_pwd = $("#Nes_pas").val()
+          var c_n_pwd = $("#c_mew_pas").val()
+          console.log(pwd,n_pwd,c_n_pwd)
+          $.ajax({
+            type:'GET',
+            data:{pwd:pwd,n_pwd:n_pwd},
+            url:"{{Route('AdminchangePwd')}}",
+            success:function(data)
+            {
+
+            }
+          })
           layer.alert('修改成功！', {
             title: '提示框',
             icon: 1,

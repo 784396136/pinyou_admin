@@ -27,7 +27,7 @@
 
 <body>
 	<div class="Competence_add_style clearfix">
-		<form action="{{Route('AdmindoCpAdd')}}" method="POST">
+		<form action="{{Route('AdmindoCpEdit',['id'=>$o_data->role_id])}}" method="POST">
 			@csrf
 		<div class="left_Competence_add">
 
@@ -35,13 +35,21 @@
 			<div class="title_name">添加权限</div>
 			<div class="Competence_add">
 				<div class="form-group"><label class="col-sm-2 control-label no-padding-right" for="form-field-1"> 权限名称 </label>
-					<div class="col-sm-9"><input type="text" id="form-field-1" placeholder="" name="role_name" class="col-xs-10 col-sm-5"></div>
+					<div class="col-sm-9"><input type="text" id="form-field-1" value="{{$o_data->role_name}}" name="role_name" class="col-xs-10 col-sm-5"></div>
 				</div>
 				
 				<div class="form-group"><label class="col-sm-2 control-label no-padding-right" for="form-field-1"> 用户选择 </label>
 					<div class="col-sm-9">
 						@foreach($info as $v)
-							<label class=""><input class="ace" name="admin[]" value="{{$v->id}}" type="checkbox" id="id-disable-check"><span class="lbl">{{$v->name}}（{{$v->role_name}}）</span></label><br><br>
+							<label class="">
+								<input 
+								@foreach ($o_data->id_list as $d)
+								@if ($v->id==$d)
+									checked
+								@endif
+								@endforeach
+								class="ace" name="admin[]" value="{{$v->id}}" type="checkbox" id="id-disable-check"><span class="lbl">{{$v->name}}（{{$v->role_name}}）</span>
+							</label><br><br>
 						@endforeach
 					</div>
 				</div>
@@ -59,17 +67,36 @@
 					@foreach ($data as $v)
 						<dl class="permission-list">
 								<dt>
-									<label class="middle"><input value="{{$v->id}}" name="pri_id[]" class="ace" type="checkbox" id="id-disable-check"><span class="lbl">{{$v->pri_name}}</span></label>
+									<label class="middle"><input
+										@foreach ($o_data->p_list as $p)
+											@if ($v->id==$p)
+												checked
+											@endif
+										@endforeach
+										value="{{$v->id}}" name="pri_id[]" class="ace" type="checkbox" id="id-disable-check"><span class="lbl">{{$v->pri_name}}</span></label>
 								</dt>
 								<dd>
 									@foreach ($v->child as $v2)
 										<dl class="cl permission-list2">
 											<dt>
-												<label class="middle"><input type="checkbox" value="{{$v2->id}}" class="ace" name="pri_id[]" id="id-disable-check"><span class="lbl">{{$v2->pri_name}}</span></label>
+												<label class="middle"><input 
+													@foreach ($o_data->p_list as $p)
+														@if ($v2->id==$p)
+															checked
+														@endif
+													@endforeach
+													type="checkbox" value="{{$v2->id}}" class="ace" name="pri_id[]" id="id-disable-check"><span class="lbl">{{$v2->pri_name}}</span></label>
 											</dt>
 											<dd>
 												@foreach ($v2->child as $v3)
-													<label class="middle"><input type="checkbox" value="{{$v3->id}}" class="ace" name="pri_id[]" id="user-Character-0-0-0"><span class="lbl">{{$v3->pri_name}}</span></label>
+													<label class="middle">
+														<input 
+														@foreach ($o_data->p_list as $p)
+															@if ($v3->id==$p)
+																checked
+															@endif
+														@endforeach
+														type="checkbox" value="{{$v3->id}}" class="ace" name="pri_id[]" id="user-Character-0-0-0"><span class="lbl">{{$v3->pri_name}}</span></label>
 												@endforeach
 											</dd>
 										</dl>
