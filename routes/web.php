@@ -13,6 +13,7 @@
 
 // 测试
 Route::get('/test','TestController@index')->name('test');
+Route::post('/a1','TestController@test')->name('a');
 
 // 登录
 Route::get('/login','LoginController@login')->name('login');
@@ -22,7 +23,7 @@ Route::middleware(['login'])->group(function(){
 
     Route::get('/','IndexController@index')->name('index');
 
-    Route::get('/home',function(){
+    Route::get('/admin/home',function(){
         return view('home');
     });
 
@@ -36,12 +37,16 @@ Route::middleware(['login'])->group(function(){
         return view('systems');
     });
 
-    
+    Route::post('/seller/doadd','SellerController@doadd')->name('ShopdoAdd'); // 商品添加
+     
     // 产品管理
     Route::get('/product/list','ProductController@list')->name('ProductList'); // 产品列表
     Route::get('/product/picture_add','ProductController@picture_add')->name('ProductAdd'); // 产品添加
+
     Route::get('/product/manage','ProductController@manage')->name('ProductManage'); // 品牌管理
     Route::get('/product/manage_add','ProductController@manage_add')->name('ProductManageAdd'); // 品牌添加
+    Route::post('/product/manage_add','ProductController@domanage_add')->name('ProductDoManageAdd'); // 品牌添加
+
     Route::get('/product/category','ProductController@category')->name('ProductCategory'); // 分类管理
     Route::get('/product/category_add','ProductController@category_add')->name('ProductCategory_add'); // 分类添加
 
@@ -106,5 +111,10 @@ Route::middleware(['login'])->group(function(){
     Route::post('/admin/add','AdminController@adminAdd')->name('AdminAdd'); // 添加管理员
 
     Route::get('/admin/info','AdminController@info')->name('AdminInfo'); // 个人信息
+
+
+
+    // 前台
+    Route::get('/home','Home\IndexController@index')->name("HomeIndex");
 
 });

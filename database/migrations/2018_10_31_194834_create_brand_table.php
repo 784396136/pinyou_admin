@@ -15,8 +15,9 @@ class CreateBrandTable extends Migration
     {
         Schema::create('brand', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('brand_name');
-            $table->string('logo');
+            $table->string('brand_name')->comment('品牌名称');
+            $table->string('logo')->comment('品牌logo');
+            $table->integer('domestic')->comment('国内外(1国内,2国外)');
         });
     }
 

@@ -21,4 +21,9 @@ class TestController extends Controller
         ->setBody("恭喜您成功通过本站的审核,能在本站开点啦~");
         $mailer->send($message);
     }
+
+    public function test(Request $req)
+    {
+        dd($req->all());
+    }
 }

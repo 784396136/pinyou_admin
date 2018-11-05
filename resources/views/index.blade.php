@@ -360,7 +360,7 @@
 				<div id="menu_style" class="menu_style">
 					<ul class="nav nav-list" id="nav_list">
 						<li class="home">
-							<a href="javascript:void(0)" name="/home" class="iframeurl" title="">
+							<a href="javascript:void(0)" name="/admin/home" class="iframeurl" title="">
 								<i class="icon-home"></i>
 								<span class="menu-text"> 系统首页 </span>
 							</a>
@@ -513,7 +513,7 @@
 					</ul>
 				</div>
 
-				<iframe id="iframe" style="border:0; width:100%; background-color:#FFF;" name="iframe" frameborder="0" src="/home">
+				<iframe id="iframe" style="border:0; width:100%; background-color:#FFF;" name="iframe" frameborder="0" src="/admin/home">
 				</iframe>
 
 
