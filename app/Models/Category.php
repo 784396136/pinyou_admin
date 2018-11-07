@@ -39,11 +39,30 @@ class Category extends Model
 
     }
 
+    // 获取上级
+    public function getParent($id)
+    {
+        $data = self::where('id',$id)->first();
+        // 转成数组并去空
+        $array = array_filter(explode('-',$data->path));
+        $array[] = $id;
+        // 查询
+        $res = self::whereIn('id',$array)->get();
+        return $res;
+    }
+
     // 获取所有
     public function getAll()
     {
         $data = Category::get();
         $res = $this->tree($data);
+        return $res;
+    }
+
+    public function getChild()
+    {
+        $data = Category::get();
+        $res = $this->_tree($data);
         return $res;
     }
 
@@ -62,6 +81,7 @@ class Category extends Model
         return $res;
     }
 
+    // 获取树状类型
     public function tree($data,$parent_id=0,$level=0)
     {
         static $res = [];
@@ -72,6 +92,21 @@ class Category extends Model
                 $v->level = $level;
                 $res[] = $v;
                 $this->tree($data,$v->id,$level+1);
+            }
+        }
+        return $res;
+    }
+
+    // 获取三维数组
+    public function _tree($data,$parent_id=0)
+    {
+        $res = [];
+        foreach($data as $v)
+        {
+            if($v->parent_id==$parent_id)
+            {
+                $v->child = $this->_tree($data,$v->id);
+                $res[] = $v;
             }
         }
         return $res;

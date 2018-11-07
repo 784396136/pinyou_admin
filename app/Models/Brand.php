@@ -11,7 +11,7 @@ class Brand extends Model
     // 指定表
     protected $table = 'brand';
     // 白名单
-    protected $fillable = ['brand_name','logo','domestic','thumbnails'];
+    protected $fillable = ['brand_name','logo','domestic','thumbnails','cate_id'];
     // 不更新时间
     public $timestamps = false;
 
@@ -31,8 +31,8 @@ class Brand extends Model
     // 添加
     public function add($data)
     {
-        // 判断是否重复 （判断品牌名和海内外）
-        $r = Brand::where('brand_name',$data['brand_name'])->where('domestic',$data['domestic'])->first();
+        // 判断是否重复 （判断品牌名、海内外、分类ID）
+        $r = Brand::where('brand_name',$data['brand_name'])->where('domestic',$data['domestic'])->where('cate_id',$data['cate_id'])->first();
         if($r)
         {
             return false;
@@ -50,17 +50,23 @@ class Brand extends Model
                     mkdir($path,0777,true);
                 }
                 $img = Image::make($old_path);
-                $img->resize(130,null,function($cons){
-                    $cons->aspectRatio();
-                });
+                $img->resize(103,52);
                 $img->save($path.'/'.$name);
                 $data['thumbnails'] = '/uploads/brand/thumbnails/'.date('Ymd').'/'.$name;
             }
+
             $model = new self;
             $model->fill($data);
             $res = $model->save();
             return $res;
         }
             
+    }
+
+    // 根据ID获取品牌
+    public function getById($id)
+    {
+        $data = self::where('cate_id',$id)->get();
+        return $data;
     }
 }

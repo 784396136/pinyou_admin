@@ -115,6 +115,8 @@ Route::middleware(['login'])->group(function(){
 
 
     // 前台
-    Route::get('/home','Home\IndexController@index')->name("HomeIndex");
+    Route::get('/home','Home\IndexController@index')->name("HomeIndex");    //主页
+    Route::get('/home/search/{cate_id}','Home\IndexController@search')->name("HomeSearch");    //搜索页
+
 
 });

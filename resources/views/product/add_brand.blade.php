@@ -32,11 +32,21 @@
 <body>
     <div class="margin clearfix">
         <div class="stystems_style">
-            <div class="tabbable">
+            <div class="tabbable"> 
                 <div class="tab-content">
                     <div id="home" class="tab-pane active">
                         <form action="{{Route('ProductDoManageAdd')}}" method="POST" enctype="multipart/form-data">
                             @csrf
+                            <div class="form-group"><label class="col-sm-1 control-label no-padding-right" for="form-field-1"><i>*</i>选择分类：
+                                </label>
+                                <div class="col-sm-9">
+                                        <select name="cate_id" id="cate_id">
+                                            @foreach ($category as $v)
+                                                <option value="{{$v->id}}"><?=str_repeat('-',8*$v['level'])?>{{$v->cat_name}}</option>
+                                            @endforeach
+                                        </select>
+                                </div>
+                            </div>
                             <div class="form-group"><label class="col-sm-1 control-label no-padding-right" for="form-field-1"><i>*</i>品牌名称：
                                 </label>
                                 <div class="col-sm-9"><input type="text" name="brand_name" id="cat_name" value="" class="col-xs-3 "></div>

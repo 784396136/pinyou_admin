@@ -17,6 +17,14 @@ class Goods extends Model
     // 设置白名单
     protected $fillable  = ['goods_name','subtitle','logo','thumbnails','content','brand_id','cat1','cat2','cat3','seller_id'];
 
+    // 获取商品
+    public function getShops($cat_id)
+    {
+        $data = self::where('cat1',$cat_id)->orwhere('cat2',$cat_id)->orwhere('cat3',$cat_id)->get();
+        return $data;
+    }
+
+    // 添加
     public function add($data)
     {
         if(isset($data['logo']) && $data['logo']!='')
@@ -88,17 +96,17 @@ class Goods extends Model
                 // 生成大图
                 $image->resize(800,800);
                 $image->save($path.'/800/'.$bg_name);
-                $image->save($seller_path.'uploads/goods/thumbnails/'.date("Ymd").'/800/'.$name);
+                $image->save($seller_path.'uploads/goods/thumbnails/'.date("Ymd").'/800/'.$bg_name);
                 $img['bg_path'] = '/uploads/goods/thumbnails/'.date('Ymd').'/800/'.$bg_name;
                 // 生成中图
                 $image->resize(400,400);
                 $image->save($path.'/400/'.$md_name);
-                $image->save($seller_path.'uploads/goods/thumbnails/'.date("Ymd").'/400/'.$name);
+                $image->save($seller_path.'uploads/goods/thumbnails/'.date("Ymd").'/400/'.$md_name);
                 $img['md_path'] = '/uploads/goods/thumbnails/'.date('Ymd').'/400/'.$md_name;
                 // 生成小图
                 $image->resize(56,56);
                 $image->save($path.'/56/'.$sm_name);
-                $image->save($seller_path.'uploads/goods/thumbnails/'.date("Ymd").'/56/'.$name);
+                $image->save($seller_path.'uploads/goods/thumbnails/'.date("Ymd").'/56/'.$sm_name);
                 $img['sm_path'] = '/uploads/goods/thumbnails/'.date('Ymd').'/56/'.$sm_name;
                 $img['goods_id'] = $id;
                 $im->fill($img);
@@ -111,7 +119,7 @@ class Goods extends Model
         {
             
             $n_attr = new G_attr_name;
-            $res = G_attr_name::where('attr_name',$v)->first();
+            $res = G_attr_name::where('attr_name',$v)->where('goods_id',$id)->first();
             if(!$res)
             {
                 $g_attr = [];

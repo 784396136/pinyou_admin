@@ -33,7 +33,11 @@ class ProductController extends Controller
     // 品牌添加
     public function manage_add()
     {
-        return view('product.add_brand');
+        $category = new Category;
+        $cate = $category->getAll();
+        return view('product.add_brand',[
+            'category'=>$cate
+        ]);
     }
 
     public function domanage_add(Request $req)
