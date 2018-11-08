@@ -20,7 +20,27 @@ class Goods extends Model
     // 获取商品
     public function getShops($cat_id)
     {
-        $data = self::where('cat1',$cat_id)->orwhere('cat2',$cat_id)->orwhere('cat3',$cat_id)->get();
+        $data = DB::table('goods as g')
+                    ->select('g.thumbnails','gs.price','si.sku_id','gs.sku_name')
+                    ->leftJoin('goods_sku as gs','g.id','gs.goods_id')
+                    ->leftJoin('sku_image as si','gs.id','si.sku_id')
+                    ->where('cat1',$cat_id)
+                    ->orwhere('cat2',$cat_id)
+                    ->orwhere('cat3',$cat_id)
+                    ->groupBy('gs.goods_id')
+                    ->get();
+        return $data;
+    }
+
+    // 详情页信息
+    public function getInfo($sku_id)
+    {
+        $data = G_sku::where('id',$sku_id)
+                        ->with('attr_name')
+                        ->with('sku_img')
+                        ->with('goods_info')
+                        ->first()
+                        ->toArray();
         return $data;
     }
 
@@ -48,10 +68,10 @@ class Goods extends Model
             }
             $img = Image::make($old_path);
             $img->save($seller_path.'goods/logo/'.date("Ymd").'/'.$name);
-            $img->resize(215,276);
+            $img->resize(212,242);
             $img->save($path.'/'.$s_name);
             $img->save($seller_path.'goods/logo/thumbnails/'.date("Ymd").'/'.$name);
-            $data['thumbnails'] = '/uploads/goods/logo/thumbnails/'.date('Ymd').'/'.$name;
+            $data['thumbnails'] = '/uploads/goods/logo/thumbnails/'.date('Ymd').'/'.$s_name;
         }
         $data['seller_id'] = session('seller_id');
         $model = new self;

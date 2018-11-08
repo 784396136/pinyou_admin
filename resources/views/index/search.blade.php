@@ -340,16 +340,16 @@
 							<li class="yui3-u-1-5">
 								<div class="list-wrap">
 									<div class="p-img">
-										<a href="item.html" target="_blank"><img src="/img/_/mobile01.png" /></a>
+										<a href="{{Route('GoodsInfo',['sku_id'=>$v->sku_id])}}" target="_blank"><img src="{{$v->thumbnails}}" /></a>
 									</div>
 									<div class="price">
 										<strong>
 											<em>¥</em>
-											<i>6088.00</i>
+											<i>{{$v->price}}</i>
 										</strong>
 									</div>
 									<div class="attr">
-										<em>Apple苹果iPhone 6s (A1699)</em>
+										<em>{{$v->sku_name}}</em>
 									</div>
 									<div class="cu">
 										<em></em>

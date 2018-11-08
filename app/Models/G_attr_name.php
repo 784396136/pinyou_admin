@@ -12,4 +12,7 @@ class G_attr_name extends Model
     protected $fillable = ['goods_id','attr_name'];
     // 不更新时间
     public $timestamps = false;
+    public function get_val(){
+        return $this->hasMany(G_attr_value::class,'name_id','id');
+    }
 }

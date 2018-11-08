@@ -138,7 +138,7 @@
 									<div class="subitem">
 										@foreach ($v->child as $v2)
 											<dl class="fore1">
-												<dt><a href="">{{$v2->cat_name}}</a></dt>
+												<dt><a href="{{Route('HomeSearch',['cate_id'=>$v2->id])}}">{{$v2->cat_name}}</a></dt>
 												<dd>
 													@foreach ($v2->child as $v3)
 														<em><a href="{{Route('HomeSearch',['cate_id'=>$v3->id])}}">{{$v3->cat_name}}</a></em>

@@ -117,6 +117,8 @@ Route::middleware(['login'])->group(function(){
     // 前台
     Route::get('/home','Home\IndexController@index')->name("HomeIndex");    //主页
     Route::get('/home/search/{cate_id}','Home\IndexController@search')->name("HomeSearch");    //搜索页
-
+    // 商品详情页
+    Route::get('/home/item/{sku_id}','Home\GoodsController@info')->name("GoodsInfo");    //详情页
+    Route::get('/home/getInfo','Home\GoodsController@ajax_getInfo')->name("GoodsGetInfo");    //详情页
 
 });

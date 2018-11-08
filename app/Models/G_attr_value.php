@@ -12,4 +12,5 @@ class G_attr_value extends Model
     protected $fillable = ['goods_id','name_id','attr_value'];
     // 不更新时间
     public $timestamps = false;
+  
 }
