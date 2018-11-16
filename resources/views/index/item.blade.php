@@ -241,7 +241,7 @@
 							<div class="fl title">
 								<div class="control-group">
 									<div class="controls">
-										<input autocomplete="off" type="text" value="1" minnum="1" class="itxt" />
+										<input id="num" autocomplete="off" type="text" value="1" minnum="1" class="itxt" />
 										<a href="javascript:void(0)" class="increment plus">+</a>
 										<a href="javascript:void(0)" class="increment mins">-</a>
 									</div>
@@ -251,6 +251,7 @@
 								<ul class="btn-choose unstyled">
 									<li>
 										<a href="cart.html" target="_blank" class="sui-btn  btn-danger addshopcar">加入购物车</a>
+										<button class="sui-btn  btn-danger addshopcar" onclick="add_car()">加入购物车</button>
 									</li>
 								</ul>
 							</div>
@@ -908,7 +909,6 @@
 	<script type="text/javascript" src="/js/plugins/sui/sui.min.js"></script>
 	<script type="text/javascript" src="/js/plugins/jquery.jqzoom/jquery.jqzoom.js"></script>
 	<script type="text/javascript" src="/js/plugins/jquery.jqzoom/zoom.js"></script>
-	<script type="text/javascript" src="/index/index.js"></script>
 
 
 	<!--页面底部  结束 -->
@@ -947,4 +947,80 @@
 		})
 		
 	}
+
+	// 添加购物车
+	function add_car()
+	{
+		var sku_name = "{{$data['sku_name']}}";
+		var sm_path = "{{$data['sku_img'][0]['sm_path']}}";
+		var price = "{{$data['price']}}";	
+		var stock = $("#num").val();	
+		var attr = "{{$data['attr']}}";
+		var goods_id = "{{$data['goods_id']}}";
+
+		$.ajax({
+			type:"POST",
+			url:"{{Route('GoodsAddCart')}}",
+			data:{_token:"{{csrf_token()}}",sku_name:sku_name,sm_path:sm_path,price:price,stock:stock,attr:attr,goods_id:goods_id},
+			dataType:"JSON",
+			success:function(id)
+			{
+				console.log(id)
+				if(id)
+				{
+					window.open("http://localhost:4545/home/addCartSuccess/"+id)
+				}
+				else
+				{
+					alert('加入购物车失败')
+				}
+			}
+		})
+		
+		// info = {
+		// 	'sm_img':"{{$data['sku_img'][0]['sm_path']}}",
+		// 	'sku_name':"{{$data['sku_name']}}",
+		// 	'price':"{{$data['price']}}",
+		// 	'stock':$("#num").val(),
+		// 	'sku_str':"{{$data['attr']}}"
+		// }
+		// if("{{session('user_id')}}")
+		// {
+		// 	alert('数据库')
+		// }
+		// else
+		// {
+		// 	// 从本地获取之前购物车的数据
+		// 	var cart = localStorage.getItem('cart')
+		// 	if(cart)
+		// 	{
+		// 		// 如果不为空就在数组中追加
+		// 		console.log(cart)
+		// 		cart = JSON.parse(cart)
+		// 		console.log(cart)
+		// 		cart.push(info)
+		// 		console.log(cart)
+		// 	}
+		// 	else
+		// 	{
+		// 		// 为空就直接设置
+		// 		cart = info
+
+		// 	}
+		// 	// localStorage.setItem('cart',JSON.stringify(info))
+		// }
+	}
+	$("#num").change(function(){
+		var stock = "{{$data['stock']}}"
+		var num = $(this).val()
+		if(isNaN(Number(num)) || num<0)
+		{
+			$(this).val(1)
+		}
+		if(Math.floor(num)>stock)
+		{
+			num = stock
+		}
+		$(this).val(num)
+	})
 </script>

@@ -114,11 +114,39 @@ Route::middleware(['login'])->group(function(){
 
 
 
-    // 前台
-    Route::get('/home','Home\IndexController@index')->name("HomeIndex");    //主页
-    Route::get('/home/search/{cate_id}','Home\IndexController@search')->name("HomeSearch");    //搜索页
-    // 商品详情页
-    Route::get('/home/item/{sku_id}','Home\GoodsController@info')->name("GoodsInfo");    //详情页
-    Route::get('/home/getInfo','Home\GoodsController@ajax_getInfo')->name("GoodsGetInfo");    //详情页
+    
 
 });
+
+// 前台
+Route::post('/home/sendCode','Home\LoginController@sendCode')->name("HomeSendCode");
+
+// 登录&注册
+Route::get('/home/login','Home\LoginController@login')->name("HomeLogin");    //登录
+Route::post('/home/login','Home\LoginController@dologin')->name("HomeDoLogin");    //登录
+Route::get('/home/register','Home\LoginController@register')->name("HomeRegister");    //注册
+Route::post('/home/register','Home\LoginController@doregister')->name("HomeDoRegister");    //注册
+
+Route::get('/home','Home\IndexController@index')->name("HomeIndex");    //主页
+Route::get('/home/search/{cate_id}','Home\IndexController@search')->name("HomeSearch");    //搜索页
+// 商品详情页
+Route::get('/home/item/{sku_id}','Home\GoodsController@info')->name("GoodsInfo");    //详情页
+Route::get('/home/getInfo','Home\GoodsController@ajax_getInfo')->name("GoodsGetInfo");    //详情页
+
+// 购物车
+Route::get('/home/cart','Home\GoodsController@cart_info')->name("GoodsCart");    //详情页
+Route::post('/home/addCart','Home\GoodsController@ajax_addCart')->name("GoodsAddCart");    //添加购物车
+Route::get('/home/addCartSuccess/{id}','Home\GoodsController@addSuccess')->name("GoodsAddSuccess");    //添加成功
+
+// 结算页
+Route::post('/home/cart','Home\GoodsController@makeOrder')->name("GoodsMakeOrder");    //下单页面
+
+
+// 支付宝支付
+Route::post('/home/alipay','Home\AlipayController@index')->name("GoodsAlipay");    //支付宝支付页
+
+
+// 微信支付
+Route::post('/home/wxpay','Home\WxpayController@index')->name("GoodsWxpay");    //微信支付页
+Route::get('/home/v_wxpay','Home\WxpayController@code')->name("GoodsV_Wxpay");    //二维码  
+Route::post('/home/wxpay/res','Home\WxpayController@notify')->name("GoodsWxpayRes");    //微信支付结果

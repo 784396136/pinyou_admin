@@ -33,7 +33,7 @@ class Goods extends Model
     }
 
     // 详情页信息
-    public function getInfo($sku_id)
+    public function getInfo($sku_id) 
     {
         $data = G_sku::where('id',$sku_id)
                         ->with('attr_name')

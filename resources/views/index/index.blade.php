@@ -87,8 +87,8 @@
 							<div class="fr shopcar">
 								<div class="show-shopcar" id="shopcar">
 									<span class="car"></span>
-									<a class="sui-btn btn-default btn-xlarge" href="cart.html" target="_blank">
-										<span>我的购物车</span>
+									<a class="sui-btn btn-default btn-xlarge" href="{{Route('GoodsCart')}}" target="_blank">
+										<span>我的购物车</span> 
 										<i class="shopnum">0</i>
 									</a>
 									<div class="clearfix shopcarlist" id="shopcarlist" style="display:none">
