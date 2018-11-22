@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\G_sku;
+use DB;
 
 class G_cart extends Model
 {
@@ -52,6 +53,12 @@ class G_cart extends Model
             'data'=>$data,
             'count'=>$count
         ];
+    }
+
+    // 获取购物车中有几件商品
+    public function getCount()
+    {
+        return self::where('user_id',session('user_id'))->count();
     }
 
     // 获取多条数据

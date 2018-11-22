@@ -250,7 +250,6 @@
 							<div class="fl">
 								<ul class="btn-choose unstyled">
 									<li>
-										<a href="cart.html" target="_blank" class="sui-btn  btn-danger addshopcar">加入购物车</a>
 										<button class="sui-btn  btn-danger addshopcar" onclick="add_car()">加入购物车</button>
 									</li>
 								</ul>

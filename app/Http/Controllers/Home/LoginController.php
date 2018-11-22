@@ -48,6 +48,14 @@ class LoginController extends Controller
         $data = $req->all();
     }
 
+    // 退出
+    public function logout(Request $req)
+    {
+        $req->session()->forget('user_id');
+        $req->session()->forget('user_name');
+        return redirect()->route('HomeIndex');
+    }
+
     // 发送手机验证码
     public function sendCode()
     {

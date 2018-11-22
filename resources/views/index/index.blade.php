@@ -11,6 +11,62 @@
 	<link rel="stylesheet" type="text/css" href="/css/pages-JD-index.css" />
 	<link rel="stylesheet" type="text/css" href="/css/widget-jquery.autocomplete.css" />
 	<link rel="stylesheet" type="text/css" href="/css/widget-cartPanelView.css" />
+	<style>
+		#shopcarlist {
+			padding:10px 0  !important;
+		}
+		#shopcarlist h4 {
+			padding: 0 10px;
+			line-height: 2px;
+		}
+		#shopcarlist .price_sum {
+			text-align: right;
+			padding: 8px 10px;
+			margin-top: 15px;
+			font-size: 12px;
+			color: #666;
+			background-color: #bffab1;
+		}
+		#shopcarlist .price_sum span {
+			float: right;
+		}
+		#shopcarlist .shopList {
+			margin-top: 15px;
+			background-color: #fff;
+			border-top: 1px dotted #ccc;
+			padding: 8px 10px;
+			
+		}
+		#shopcarlist .shopList img {
+			margin-top: 0px;
+			vertical-align: top !important;
+		}
+		#shopcarlist .shopList .shop_name {
+			display: inline-block;
+			width: 80px;
+			height: 50px;
+			text-overflow: ellipsis;
+			overflow: hidden;
+		}
+		#shopcarlist .count_price::after {
+			clear: both;
+                content: "";
+                width: 0;
+                height: 0;
+                display: block;
+                visibility: hidden;
+		}
+		#shopcarlist .count_price {
+			width: 94px;
+			float: right;
+		}
+		#shopcarlist .count_price p {
+			float: right;
+		}
+		#shopcarlist .count_price .price {
+			color: #e4393c;
+		}
+	</style>
 </head>
 
 <body>
@@ -24,7 +80,11 @@
 					<div class="shortcut">
 						<ul class="fl">
 							<li class="f-item">品优购欢迎您！</li>
-							<li class="f-item">请<a href="login.html" target="_blank">登录</a>　<span><a href="register.html" target="_blank">免费注册</a></span></li>
+							@if (session('user_id'))
+								<li class="f-item">{{session('user_name')}}　<span><a onclick="return confirm('确定退出？')" href="{{Route('HomeLogout')}}">退出</a></span></li>
+							@else
+								<li class="f-item">请<a href="{{Route('HomeLogin')}}">登录</a>　<span><a href="{{Route('HomeRegister')}}" target="_blank">免费注册</a></span></li>
+							@endif
 						</ul>
 						<ul class="fr">
 							<li class="f-item">我的订单</li>
@@ -89,11 +149,28 @@
 									<span class="car"></span>
 									<a class="sui-btn btn-default btn-xlarge" href="{{Route('GoodsCart')}}" target="_blank">
 										<span>我的购物车</span> 
-										<i class="shopnum">0</i>
+										<i class="shopnum">{{$cart_info['count']}}</i>
 									</a>
 									<div class="clearfix shopcarlist" id="shopcarlist" style="display:none">
-										<p>"啊哦，你的购物车还没有商品哦！"</p>
-										<p>"啊哦，你的购物车还没有商品哦！"</p>
+										@if ($cart_info['count']==0)
+											<p style="padding:0 10px;">"啊哦，你的购物车还没有商品哦！"</p>
+										@else
+											<h4>最新加入的商品</h4>
+											<div class="price_sum">
+												小计：￥{{$sum_price}}
+											</div>
+											@foreach ($cart_info['data'] as $v)
+												<div class="shopList">
+													<img src="{{$v->sm_path}}" alt="" width="50" height="50">
+													<span class="shop_name">
+														{{$v->sku_name}}
+													</span>
+													<div class="count_price">
+														<p><span class="price">￥{{$v->price}}</span>×{{$v->stock}}</p>
+													</div>
+												</div>
+											@endforeach
+										@endif
 									</div>
 								</div>
 							</div>

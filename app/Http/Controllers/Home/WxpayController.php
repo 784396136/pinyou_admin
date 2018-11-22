@@ -76,9 +76,9 @@ class WxpayController extends Controller
             // 判断是否支付成功
             if($data->result_code == 'SUCCESS' && $data->return_code == 'SUCCESS')
             {
-               // 开启事务
+                // 开启事务
                 DB::beginTransaction();
-                        
+                                
                 // 将订单状态修改为已提交
                 $res = Order::where('order_number',$data->out_trade_no)->update(['pay_status'=>'1']);
                 $order_id = Order::select('id')->where('order_number',$data->out_trade_no)->first();
@@ -88,7 +88,6 @@ class WxpayController extends Controller
                 foreach($id_stock as $k=>$v)
                 {
                     $attr = G_sku::select('attr')->where('id',$v->sku_id)->first();
-
                     // 减去商品的库存
                     $sku_stock = G_sku::select('stock')->where('id',$v->sku_id)->first();
                     $stock = $sku_stock->stock*1 - $v->stock*1;
@@ -99,22 +98,22 @@ class WxpayController extends Controller
                     if($c_stock<=0)
                     {
                         $res3 = G_cart::where('attr',$attr->attr)->where('user_id',session('user_id'))->delete();
+                        if($res && $res1 && $res2 && $res3){
+                            DB::commit();
+                        }else{
+                            DB::rollBack();
+                        }
                     }
                     else
                     {
                         $res3 = G_cart::where('attr',$attr->attr)->where('user_id',session('user_id'))->update(['stock'=>$c_stock]);
+                        if($res && $res1 && $res2 && $res3){
+                            DB::commit();
+                        }else{
+                            DB::rollBack();
+                        }
                     }
-                    if($res2 && $res3){
-                        DB::commit();
-                    }else{
-                        DB::rollBack();
-                    }
-                }
-                // 事务判断
-                if($res && $res1){
-                    DB::commit();
-                }else{
-                    DB::rollBack();
+                    
                 }
             }
     

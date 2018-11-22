@@ -72,7 +72,7 @@
 			<h4>全部商品 <span>共{{$data['count']}}件商品</span></h4>
 			<div class="cart-main">
 				<div class="yui3-g cart-th">
-					<div class="yui3-u-1-4"><input type="checkbox" name="" id="" value="" /> 全部</div>
+					<div class="yui3-u-1-4"><input onclick="checkAll()" type="checkbox" name="" id="" value="" /> 全部</div>
 					<div class="yui3-u-1-4">商品</div>
 					<div class="yui3-u-1-8">单价（元）</div>
 					<div class="yui3-u-1-8">数量</div>
@@ -83,7 +83,7 @@
 			@csrf
 				<div class="cart-item-list">
 					<div class="cart-body">
-						@foreach ($data['data'] as $v)
+						@foreach ($data['data'] as $k=>$v)
 							<div class="cart-list">
 								<ul class="goods-list yui3-g">
 									<li class="yui3-u-1-24">
@@ -100,9 +100,9 @@
 
 									<li class="yui3-u-1-8"><span class="price">{{$v->price}}</span></li>
 									<li class="yui3-u-1-8">
-										<a href="javascript:void(0)" class="increment mins">-</a>
+										<a href="javascript:minus('{{$k}}')" class="increment mins">-</a>
 										<input autocomplete="off" type="text" value="{{$v->stock}}" minnum="1" class="itxt" />
-										<a href="javascript:void(0)" class="increment plus">+</a>
+										<a href="javascript:add('{{$k}}')" class="increment plus">+</a>
 									</li>
 									<li class="yui3-u-1-8"><span class="sum">{{$v->price*$v->stock}}</span></li>
 									<li class="yui3-u-1-8">
@@ -117,7 +117,7 @@
 			</div>
 			<div class="cart-tool">
 				<div class="select-all">
-					<input type="checkbox" name="" id="" value="" />
+					<input onclick="checkAll()" type="checkbox" name="" id="" value="" />
 					<span>全选</span>
 				</div>
 				<div class="option">
@@ -409,6 +409,50 @@
 
 </html>
 <script>
+	// 全选
+	function checkAll()
+	{
+		console.log($("input[name='goods[]']"))
+		$("input[name='goods[]']").trigger('click')
+	}
+
+	// 数量减
+	function minus(num)
+	{
+		// 获取数量
+		var stock = $($('.itxt')[num]).val()
+		// 获取单价
+		var price = $($('.price')[num]).text()
+		// 获取小计
+		var sum_price = $($('.sum')[num]).text()
+		if(stock>1)
+		{
+			stock--
+			// 重新计算小计
+			sum_price = stock * price
+		}
+		// 把新数量放回框中
+		$($('.itxt')[num]).val(stock)
+		// 把新计算的小计放回框中
+		$($('.sum')[num]).text(sum_price)
+	}
+	// 数量加
+	function add(num)
+	{
+		// 获取数量
+		var stock = $($('.itxt')[num]).val()
+		// 获取单价
+		var price = $($('.price')[num]).text()
+		// 获取小计
+		var sum_price = $($('.sum')[num]).text()
+		stock++;
+		// 重新计算小计
+		sum_price = price * stock
+		// 新数量放回框中
+		$($('.itxt')[num]).val(stock)
+		// 新小计放回框中
+		$($('.sum')[num]).text(sum_price)
+	}
 	var goods = document.getElementsByName('goods')
 	var sum_price = 0;
 	$('.summoney').html('￥'+sum_price)

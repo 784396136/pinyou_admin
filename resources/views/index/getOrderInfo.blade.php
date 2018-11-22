@@ -432,7 +432,14 @@
 		}
 		else if(pay_method=='支付宝付款')
 		{
-			alert('支付宝付款')
+			$.ajax({
+				type:"POST",
+				url:"{{Route('GoodsAlipay')}}",
+				data:{_token:"{{csrf_token()}}",goods_id:goods_id,goods_stock:goods_stock,name:name,address:address,moble:phone},
+				success:function(data){
+					document.write(data)
+				}
+			})
 		}
 		
 	}

@@ -121,11 +121,12 @@ Route::middleware(['login'])->group(function(){
 // 前台
 Route::post('/home/sendCode','Home\LoginController@sendCode')->name("HomeSendCode");
 
-// 登录&注册
+// 登录&注册&退出
 Route::get('/home/login','Home\LoginController@login')->name("HomeLogin");    //登录
 Route::post('/home/login','Home\LoginController@dologin')->name("HomeDoLogin");    //登录
 Route::get('/home/register','Home\LoginController@register')->name("HomeRegister");    //注册
 Route::post('/home/register','Home\LoginController@doregister')->name("HomeDoRegister");    //注册
+Route::get('/home/logout','Home\LoginController@logout')->name("HomeLogout");  //退出
 
 Route::get('/home','Home\IndexController@index')->name("HomeIndex");    //主页
 Route::get('/home/search/{cate_id}','Home\IndexController@search')->name("HomeSearch");    //搜索页
@@ -143,7 +144,9 @@ Route::post('/home/cart','Home\GoodsController@makeOrder')->name("GoodsMakeOrder
 
 
 // 支付宝支付
-Route::post('/home/alipay','Home\AlipayController@index')->name("GoodsAlipay");    //支付宝支付页
+Route::post('/home/alipay','Home\AlipayController@pay')->name("GoodsAlipay");    //支付宝支付页
+Route::post('/home/alipay/notify','Home\AlipayController@notify')->name("GoodsAlipayNotify");    //支付宝支结果通知
+Route::get('/home/alipay/return','Home\AlipayController@return')->name("GoodsAlipayReturn");    //支付宝支结果通知
 
 
 // 微信支付

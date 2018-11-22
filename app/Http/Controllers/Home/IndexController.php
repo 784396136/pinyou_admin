@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Brand;
 use App\Models\Goods;
+use App\Models\G_cart;
 
 
 class IndexController extends Controller
@@ -16,8 +17,20 @@ class IndexController extends Controller
     {
         $category = new Category;
         $cate = $category->getChild();
+        $cart = new G_cart;
+        $cart_info = $cart->getAll();
+        if($cart_info)
+        {
+            $sum_price = 0;
+            foreach($cart_info['data'] as $v)
+            {
+                $sum_price += $v->price * $v->stock;
+            }
+        }
         return view('index.index',[
-            'category'=>$cate
+            'category'=>$cate,
+            'cart_info'=>$cart_info,
+            'sum_price'=>$sum_price
         ]);
     }
 
